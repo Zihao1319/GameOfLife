@@ -13,7 +13,6 @@ public class Coordinate {
         this.x = x;
         this.y = y;
         this.hashCode = Objects.hash(x, y);
-        // this.position = new Point(x ,y);
     }
 
     public int getX(int x) {

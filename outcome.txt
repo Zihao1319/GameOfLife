@@ -6,6 +6,7 @@ Iteration: %d
 0000**
 0000**
 0000**
+
 Population: 9
 
 Iteration: %d
@@ -16,6 +17,7 @@ Iteration: %d
 000*0*
 000*0*
 000*00
+
 Population: 13
 
 Iteration: %d
@@ -26,5 +28,28 @@ Iteration: %d
 000*0*
 00**00
 00***0
+
 Population: 11
+
+Iteration: %d
+3
+0000**
+00*00*
+0*0*0*
+0*0*00
+0*00**
+0*****
+
+Population: 17
+
+Iteration: %d
+4
+000***
+0*0*0*
+**0*00
+0*0*0*
+*0000*
+******
+
+Population: 21
 

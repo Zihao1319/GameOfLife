@@ -1,6 +1,7 @@
 package homework03;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,8 +30,13 @@ public class Main {
 
     public static void main (String args []) throws IOException {
 
-        //loading the gol file
-        Path gridPath = Paths.get("./toad.gol");
+        Console cons = System.console();
+
+    
+        String fileName = cons.readLine (">>> ");
+
+         //loading the gol file
+        Path gridPath = Paths.get("./game/" + fileName);
         File gridFile = gridPath.toFile();
 
         if (!gridFile.exists()) {
@@ -38,16 +44,19 @@ public class Main {
             System.exit(1);
         }
 
+
         FileReader fr = new FileReader(gridFile);
         BufferedReader br = new BufferedReader (fr);
 
         String line;
 
+        // initializing width, height, starting position 
         int xSTART = 0;
         int ySTART = 0;
         int width = 0;
         int height = 0;
 
+        // initializing hashmap to store each coordiante and their living status
         Map <Coordinate, Boolean> grid = new LinkedHashMap<>();
 
         // reading the file
@@ -95,27 +104,32 @@ public class Main {
         }
 
         var updatedGrids = grid;
-        // System.out.println(updatedGrids);
 
-        //checking the condition
-        int loopNum = 3;
-
-        // creating a list storing the result of each iteration
+        // creating a list storing the hashmap result of each iteration
         List <Map> iterations = new ArrayList<>();
 
         // initialize the first grid
         iterations.add(updatedGrids);
 
-        FileWriter fw = new FileWriter("outcome.txt");
+        FileWriter fw = new FileWriter("./results/" + fileName + "_outcome");
+
+         //keying the generations number
+         int loopNum = 5;
 
         // running through the game
         for (int i = 0; i < loopNum; i++) {
             
             Map currGrid = iterations.get(i);
-            Map gridClone = currGrid;
+            Map gridClone = createMap (width, height);
 
-            fw.write("Iteration: %d\n" + i);
+            // System.out.println(grid);
+
+            int generation = i + 1;
+
+            fw.write("Iteration: " + generation);
             fw.write("\n");
+
+
 
             int population = 0;
         
@@ -169,7 +183,7 @@ public class Main {
                     }
 
                     //check if there is anyone diagonally up right
-                    if (grid.containsKey(new Coordinate (xAxis+1, yAxis-1))) {
+                    if (currGrid.containsKey(new Coordinate (xAxis+1, yAxis-1))) {
 
                         var neighbourStatus = currGrid.get(new Coordinate (xAxis+1, yAxis-1));
 
@@ -222,6 +236,7 @@ public class Main {
                         gridClone.put(new Coordinate (xAxis, yAxis), true);
                         // fw.write("0");
                         fw.write("*");
+                        population += 1;
 
                     } else if (neighboursNum == 3 ) {
                         gridClone.put(new Coordinate (xAxis, yAxis), true);
@@ -233,7 +248,6 @@ public class Main {
                         gridClone.put(new Coordinate (xAxis, yAxis), false);
                         // fw.write("0");
                         fw.write("0");
-                        population += 1;
     
                     }
                     System.out.printf("%d", neighboursNum);
@@ -242,6 +256,8 @@ public class Main {
                 fw.write("\n");
             }
             iterations.add(gridClone);
+            fw.write("\n");
+            System.out.printf("\n");
             fw.write("Population: " + population);
             fw.write("\n");
             fw.write("\n");
@@ -249,5 +265,6 @@ public class Main {
             System.out.printf("\n");
             fw.flush();
         }
+        fw.close();
     }
 }
